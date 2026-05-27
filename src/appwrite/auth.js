@@ -1,3 +1,4 @@
+// this file handles all Appwrite authentication related work like signup, login, logout and getting current user
 import conf from '../conf/conf.js'
 
 // importing appwrite classes
