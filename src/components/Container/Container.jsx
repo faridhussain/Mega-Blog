@@ -1,5 +1,5 @@
-export default function Container() {
+export default function Container({ children }) {
     return (
-        <div>Container</div>
+        <div>{children}</div>
     )
 }
