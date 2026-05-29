@@ -36,13 +36,13 @@ export default function Header() {
     ]
 
     return (
-        <header>
+        <header className='py-4 px-6 border-b-2 border-b-orange-500'>
             <Container>
-                <nav>
+                <nav className='flex justify-between'>
                     <div>
                         <Link to='/' className='text-3xl font-black'>Logo</Link>
                     </div>
-                    <ul>
+                    <ul className='flex gap-7 items-center'>
                         {navItems.map(item => (
                             item.active ? (
                                 <li key={item.name}>
