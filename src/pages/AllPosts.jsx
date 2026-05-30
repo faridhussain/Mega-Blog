@@ -6,7 +6,7 @@ export default function AllPosts() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        appwriteService.getPosts().then((posts) => {
+        appwriteService.getPosts({ queries: [] }).then((posts) => {
             if (posts) {
                 setPosts(posts.documents)
             }
@@ -16,7 +16,7 @@ export default function AllPosts() {
     return (
         <div>
             <Container>
-                <div className='flex flex-wrap gap-2'>
+                <div className='flex flex-wrap gap-2 p-3'>
                     {posts.map((post) => (
                         <PostCard key={post.$id} {...post} />
                     ))}

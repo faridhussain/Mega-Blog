@@ -22,9 +22,9 @@ export default function App() {
   }, [])
 
   return !loading ? (
-    <div className='min-h-screen flex justify-between flex-col'>
+    <div className='min-h-screen flex flex-col'>
       <Header />
-      <main>
+      <main className='grow'>
         <Outlet />
       </main>
       <Footer />

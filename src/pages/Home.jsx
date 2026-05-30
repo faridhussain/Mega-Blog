@@ -16,7 +16,7 @@ export default function Home() {
     if (posts.length === 0) {
         return (
             <Container>
-                <div className='flex justify-center items-center'>
+                <div className='flex justify-center items-center min-h-[70vh]'>
                     <h1 className='text-gray-700 text-3xl font-bold'>Login to read posts</h1>
                 </div>
             </Container>
@@ -24,14 +24,12 @@ export default function Home() {
     }
 
     return (
-        <div>
-            <Container>
-                <div className='flex gap-2 flex-wrap'>
-                    {posts.map((post) => (
-                        <PostCard key={post.$id} {...post} />
-                    ))}
-                </div>
-            </Container>
-        </div>
+        <Container>
+            <div className='flex gap-2 flex-wrap p-3'>
+                {posts.map((post) => (
+                    <PostCard key={post.$id} {...post} />
+                ))}
+            </div>
+        </Container>
     )
 }
