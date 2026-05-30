@@ -25,5 +25,6 @@ export {
     PostCard,
     Select,
     Signup,
+    PostForm,
     RTE
 }
