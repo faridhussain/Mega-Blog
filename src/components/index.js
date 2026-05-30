@@ -9,6 +9,9 @@ import Logo from './Logo.jsx'
 import PostCard from './PostCard.jsx'
 import Select from './Select.jsx'
 import RTE from './RTE.jsx'
+import Signup from './Signup.jsx'
+import PostForm from './post-form/PostForm.jsx'
+import AuthLayout from './AuthLayout.jsx'
 
 export {
     Container,
@@ -21,5 +24,6 @@ export {
     Logo,
     PostCard,
     Select,
+    Signup,
     RTE
 }
