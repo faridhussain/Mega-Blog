@@ -9,11 +9,11 @@ const Input = React.forwardRef(function Input({
     const id = useId()
 
     return (
-        <div className='w-full'>
-            {label && <label className='font-medium' htmlFor={id}>{label}</label>}
+        <div className='w-full flex flex-col'>
+            {label && <label className='font-medium text-lg' htmlFor={id}>{label}</label>}
             <input 
                 type={type} 
-                className={`outline-none rounded-md p-2 border border-[#555555] hover:border-black duration-300 ${className}`} 
+                className={`outline-none rounded-md p-2 border border-[#888] hover:border-black duration-300 ${className}`} 
                 ref={ref} 
                 id={id}
                 {...props}

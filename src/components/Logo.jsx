@@ -1,5 +1,5 @@
 export default function Logo() {
     return (
-        <div>Logo</div>
+        <div>Mega Blog</div>
     )
 }
