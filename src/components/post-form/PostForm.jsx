@@ -73,8 +73,8 @@ export default function PostForm({ post = null }) {
     }, [watch, slugTransform, setValue])
 
     return (
-        <form onSubmit={handleSubmit(submit)}>
-            <div>
+        <form autoComplete='off' className='flex gap-5 items-center py-5 px-10' onSubmit={handleSubmit(submit)}>
+            <div className='flex flex-col gap-3 w-3/4'>
                 <Input
                     label = 'Title: '
                     placeholder = 'Title'
@@ -101,14 +101,27 @@ export default function PostForm({ post = null }) {
                     defaultValue={getValues('content')} 
                 />
             </div>
-            <div>
-                <Input 
-                    label='Featured Image: '
-                    type='file'
-                    className=''
-                    accept='image/png, image/jpg, image/gif'
-                    { ...register('image', { required: !post }) }
-                />
+            <div className='flex flex-col gap-5 w-1/4'>
+                <div className='flex flex-col gap-2'>
+                    <label className='font-medium text-lg'>
+                        Featured Image:
+                    </label>
+
+                    <label
+                        htmlFor='image-upload'
+                        className='px-4 py-2 border border-[#4A6CF7] text-[#4A6CF7] w-50 rounded-md font-medium cursor-pointer hover:opacity-90 duration-300 text-center'
+                    >
+                        Upload Image
+                    </label>
+
+                    <input
+                        id='image-upload'
+                        type='file'
+                        accept='image/png, image/jpg, image/gif'
+                        className='hidden'
+                        {...register('image', { required: !post })}
+                    />
+                </div>
                 {post && (
                     <div>
                         <img 
@@ -129,7 +142,7 @@ export default function PostForm({ post = null }) {
                 <Button 
                     type='submit'
                     bgColor={post ? 'bg-green-600' : undefined}
-                    className=''
+                    className='w-50'
                 > 
                     {post ? 'Update' : 'Submit'}
                 </Button>

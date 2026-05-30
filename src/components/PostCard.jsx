@@ -2,10 +2,7 @@ import appwriteService from '../appwrite/config.js'
 import { Link } from 'react-router-dom'
 
 export default function PostCard({ $id, featuredImage, title, content }) {
-    
-    const preview = content
-        ?.replace(/<[^>]*>/g, '')
-        ?.slice(0, 80)
+    const preview = content ?.replace(/<[^>]*>/g, '') ?.slice(0, 80)
     
     return (
         <Link to={`/post/${$id}`}>
