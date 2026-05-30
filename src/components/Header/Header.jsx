@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import Container from '../Container/Container'
 import LogoutBtn from './LogoutBtn'
 
@@ -39,13 +39,13 @@ export default function Header() {
             <Container>
                 <nav className='flex justify-between items-center'>
                     <div>
-                        <Link to='/' className='text-3xl font-semibold'>Mega Blog</Link>
+                        <NavLink to='/' className='text-3xl font-semibold'>Mega Blog</NavLink>
                     </div>
                     <ul className='flex gap-7 items-center'>
                         {navItems.map(item => (
                             item.active ? (
                                 <li key={item.name}>
-                                    <Link className='text-[#61615e] hover:text-[#5C7CF8] duration-300 text-lg font-medium' to={item.slug}>{item.name}</Link>
+                                    <NavLink to={item.slug} className={({ isActive }) => `duration-300 text-lg font-medium ${ isActive ? 'text-[#5C7CF8]' : 'text-[#61615e] hover:text-[#5C7CF8]'}`}>{item.name}</NavLink>
                                 </li>
                             ) : null
                         ))}

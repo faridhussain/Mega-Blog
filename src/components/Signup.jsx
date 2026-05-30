@@ -43,6 +43,7 @@ export default function Signup() {
                         <Input 
                             className='w-100'
                             label='Full name:'
+                            autoComplete='off'
                             placeholder='Enter your full name'
                             { ...register('name', {
                                 required: true
@@ -50,6 +51,7 @@ export default function Signup() {
                         />
                         {/* Input for email */}
                         <Input
+                            autoComplete='new-email'
                             label='Email: '
                             type='email'
                             className='w-100'
@@ -66,6 +68,7 @@ export default function Signup() {
                             label='Password: '
                             type='password'
                             className='w-100'
+                            autoComplete='new-password'
                             placeholder='Enter your password'
                             { ...register('password', {
                                 required: true

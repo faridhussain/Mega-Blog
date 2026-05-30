@@ -13,6 +13,16 @@ export default function AllPosts() {
         })
     }, [])
 
+    if (posts.length === 0) {
+        return (
+            <Container>
+                <div className='flex justify-center items-center min-h-[70vh]'>
+                    <h1 className='text-3xl font-bold text-gray-700'>No posts available!</h1>
+                </div>
+            </Container>
+        )
+    }
+
     return (
         <div>
             <Container>

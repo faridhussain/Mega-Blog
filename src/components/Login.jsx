@@ -42,6 +42,7 @@ export default function Login() {
                         <Input
                             label='Email: '
                             type='email'
+                            autoComplete='new-email'
                             className='w-100'
                             placeholder='Enter your email'
                             { ...register('email', {
@@ -54,6 +55,7 @@ export default function Login() {
                         <Input 
                             className='w-100'
                             label='Password: '
+                            autoComplete='new-password'
                             type='password'
                             placeholder='Enter your password'
                             { ...register('password', {

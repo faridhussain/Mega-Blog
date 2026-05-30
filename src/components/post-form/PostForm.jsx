@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, Input, RTE, Select } from '../index.js'
 import appwriteService from '../../appwrite/config.js'
@@ -9,7 +9,7 @@ export default function PostForm({ post = null }) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || ''
         }
@@ -17,6 +17,10 @@ export default function PostForm({ post = null }) {
 
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
+
+    const [imagePreview, setImagePreview] = useState(
+        post ? appwriteService.getFilePreview(post.featuredImage) : null
+    )
 
     const submit = async (data) => {
         if (post) {
@@ -109,9 +113,9 @@ export default function PostForm({ post = null }) {
 
                     <label
                         htmlFor='image-upload'
-                        className='px-4 py-2 border border-[#4A6CF7] text-[#4A6CF7] w-50 rounded-md font-medium cursor-pointer hover:opacity-90 duration-300 text-center'
+                        className='px-4 py-2 bg-[#4A6CF7] text-white w-50 rounded-md font-medium cursor-pointer hover:opacity-90 duration-300 text-center'
                     >
-                        Upload Image
+                        {post ? 'Update Image' : 'Upload Image'}
                     </label>
 
                     <input
@@ -120,14 +124,21 @@ export default function PostForm({ post = null }) {
                         accept='image/png, image/jpg, image/gif'
                         className='hidden'
                         {...register('image', { required: !post })}
+                        onChange={(e) => {
+                            const file = e.target.files[0]
+
+                            if (file) {
+                                setImagePreview(URL.createObjectURL(file))
+                            }
+                        }}
                     />
                 </div>
-                {post && (
+                {imagePreview && (
                     <div>
-                        <img 
-                            src={appwriteService.getFilePreview(post.featuredImage)}
-                            alt={post.title}
-                            className=''
+                        <img
+                            src={imagePreview}
+                            alt='Preview'
+                            className='rounded-md'
                         />
                     </div>
                 )}
@@ -139,13 +150,24 @@ export default function PostForm({ post = null }) {
                         required: true
                     }) }
                 />
-                <Button 
-                    type='submit'
-                    bgColor={post ? 'bg-green-600' : undefined}
-                    className='w-50'
-                > 
-                    {post ? 'Update' : 'Submit'}
-                </Button>
+                <div className='flex gap-3'>
+                    {post && (
+                        <Button
+                            type='button'
+                            bgColor='bg-gray-500'
+                            onClick={() => navigate(`/post/${post.$id}`)}
+                        >
+                            Cancel
+                        </Button>
+                    )}
+
+                    <Button
+                        type='submit'
+                        bgColor={post ? 'bg-green-600' : undefined}
+                    >
+                        {post ? 'Update' : 'Submit'}
+                    </Button>
+                </div>
             </div>
         </form>
     )
