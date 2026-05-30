@@ -23,6 +23,8 @@ export default function PostForm({ post = null }) {
     )
 
     const submit = async (data) => {
+        console.log(data)
+
         if (post) {
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
@@ -121,16 +123,18 @@ export default function PostForm({ post = null }) {
                     <input
                         id='image-upload'
                         type='file'
-                        accept='image/png, image/jpg, image/gif'
+                        accept='image/png, image/jpeg, image/gif'
                         className='hidden'
-                        {...register('image', { required: !post })}
-                        onChange={(e) => {
-                            const file = e.target.files[0]
+                        {...register('image', {
+                            required: !post,
+                            onChange: (e) => {
+                                const file = e.target.files[0]
 
-                            if (file) {
-                                setImagePreview(URL.createObjectURL(file))
+                                if (file) {
+                                    setImagePreview(URL.createObjectURL(file))
+                                }
                             }
-                        }}
+                        })}
                     />
                 </div>
                 {imagePreview && (
