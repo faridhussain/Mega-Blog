@@ -1,5 +1,4 @@
 import Container from './Container/Container.jsx'
-import Footer from './Footer/Footer.jsx'
 import Header from './Header/Header.jsx'
 import Button from './Header/Button.jsx'
 import LogoutBtn from './Header/LogoutBtn.jsx'
@@ -15,7 +14,6 @@ import AuthLayout from './AuthLayout.jsx'
 
 export {
     Container,
-    Footer,
     Header,
     Button,
     LogoutBtn,

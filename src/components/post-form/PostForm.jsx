@@ -171,7 +171,7 @@ export default function PostForm({ post = null }) {
                     >
                         {post ? 'Update' : 'Submit'}
                     </Button>
-                </div>
+                </div>  
             </div>
         </form>
     )
