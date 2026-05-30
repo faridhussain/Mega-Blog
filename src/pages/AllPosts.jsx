@@ -6,7 +6,7 @@ export default function AllPosts() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        appwriteService.getPosts([]).then((posts) => {
+        appwriteService.getPosts().then((posts) => {
             if (posts) {
                 setPosts(posts.documents)
             }
@@ -16,12 +16,10 @@ export default function AllPosts() {
     return (
         <div>
             <Container>
-                <div>
-                    {posts.map((post) => {
-                        <div key={post.$id}>
-                            <PostCard {...post} />
-                        </div>
-                    })}
+                <div className='flex flex-wrap gap-2'>
+                    {posts.map((post) => (
+                        <PostCard key={post.$id} {...post} />
+                    ))}
                 </div>
             </Container>
         </div>

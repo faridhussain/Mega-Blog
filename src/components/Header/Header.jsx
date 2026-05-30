@@ -45,7 +45,7 @@ export default function Header() {
                         {navItems.map(item => (
                             item.active ? (
                                 <li key={item.name}>
-                                    <Link className='text-[#61615e] hover:text-black duration-300 text-lg font-medium' to={item.slug}>{item.name}</Link>
+                                    <Link className='text-[#61615e] hover:text-[#5C7CF8] duration-300 text-lg font-medium' to={item.slug}>{item.name}</Link>
                                 </li>
                             ) : null
                         ))}

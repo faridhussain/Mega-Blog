@@ -15,26 +15,20 @@ export default function Home() {
 
     if (posts.length === 0) {
         return (
-            <div>
-                <Container>
-                    <div>
-                        <div>
-                            <h1>Login to read posts</h1>
-                        </div>
-                    </div>
-                </Container>
-            </div>
+            <Container>
+                <div className='flex justify-center items-center'>
+                    <h1 className='text-gray-700 text-3xl font-bold'>Login to read posts</h1>
+                </div>
+            </Container>
         )
     }
 
     return (
         <div>
             <Container>
-                <div>
+                <div className='flex gap-2 flex-wrap'>
                     {posts.map((post) => (
-                        <div key={post.$id}>
-                            <PostCard {...post} />
-                        </div>
+                        <PostCard key={post.$id} {...post} />
                     ))}
                 </div>
             </Container>
