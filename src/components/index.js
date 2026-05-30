@@ -8,6 +8,7 @@ import Login from './Login.jsx'
 import Logo from './Logo.jsx'
 import PostCard from './PostCard.jsx'
 import Select from './Select.jsx'
+import RTE from './RTE.jsx'
 
 export {
     Container,
@@ -19,5 +20,6 @@ export {
     Login,
     Logo,
     PostCard,
-    Select
+    Select,
+    RTE
 }
