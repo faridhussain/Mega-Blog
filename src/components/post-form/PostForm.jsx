@@ -5,7 +5,7 @@ import appwriteService from '../../appwrite/config.js'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
-export default function PostForm() {
+export default function PostForm({ post = null }) {
     const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
         defaultValues: {
             title: post?.title || '',
@@ -16,11 +16,11 @@ export default function PostForm() {
     })
 
     const navigate = useNavigate()
-    const userData = useSelector((state) => state.user.userData)
+    const userData = useSelector((state) => state.auth.userData)
 
     const submit = async (data) => {
         if (post) {
-            const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
+            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
                 appwriteService.deleteFile(post.featuredImage)
@@ -55,7 +55,7 @@ export default function PostForm() {
 
     const slugTransform = useCallback((value) => {
         if (value && typeof value === 'string') {
-            return value.trim().toLowerCase().replace(/^[a-zA-Z\d\s]+/g, '-').replace(/\s/g, '-')
+            return value.trim().toLowerCase().replace(/[^\w\s]/gi, '').replace(/\s+/g, '-')
         }
         return ''
     }, [])
@@ -63,7 +63,7 @@ export default function PostForm() {
     useEffect(() => {
         const subscription = watch((value, {name}) => {
             if (name === 'title') {
-                setValue('slug', slugTransform(value.title, {shouldValidate: true}))
+                setValue('slug', slugTransform(value.title), {shouldValidate: true})
             }
         })
 

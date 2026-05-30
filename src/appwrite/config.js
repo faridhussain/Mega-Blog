@@ -92,7 +92,7 @@ export class Service {
     }
 
     // method for getting all active posts
-    async getPosts({ queries = [Query.equal('status', 'active')] }) {
+    async getPosts({ queries = [Query.equal('status', 'active')] } = {}) {
         try {
             // getting all documents which match query
             return await this.databases.listDocuments(
@@ -135,7 +135,7 @@ export class Service {
 
     // method for getting file preview url
     getFilePreview(fileId) {
-        return this.bucket.getFilePreview(
+        return this.bucket.getFileView(
             conf.appwriteBucketId,
             fileId  
         )
