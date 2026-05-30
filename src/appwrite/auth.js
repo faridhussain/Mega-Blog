@@ -50,13 +50,11 @@ export class AuthService {
     // method to check currently logged in user
     async getCurrentUser() {
         try {
-            return this.account.get()
+            return await this.account.get()
         } catch (error) {
             console.log('Appwrite service :: getCurrentUser :: error', error)
+            return null 
         }
-
-        // if user not found return null
-        return null 
     }
 
     // method for logout

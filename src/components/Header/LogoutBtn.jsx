@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import authService from '../../appwrite/auth'
 import { logout } from '../../store/authSlice'
+import { Button } from '../index.js'
 
 export default function LogoutBtn() {
     const dispatch = useDispatch()
@@ -13,6 +14,6 @@ export default function LogoutBtn() {
     }
 
     return (
-        <button onClick={logoutHandler}>Logout</button>
+        <Button onClick={logoutHandler}>Logout</Button>
     )
 }
