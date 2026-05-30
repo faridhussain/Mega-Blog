@@ -35,7 +35,7 @@ export default function Header() {
     ]
 
     return (
-        <header className='py-4 px-8 border-b-2 border-b-[#E5E3DC]'>
+        <header className='py-4 px-8 sticky top-0 left-0 z-100 bg-white border-b-2 border-b-[#E5E3DC]'>
             <Container>
                 <nav className='flex justify-between items-center'>
                     <div>
