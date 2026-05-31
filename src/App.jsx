@@ -23,7 +23,7 @@ export default function App() {
   }, []);
 
   return !loading ? (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-[#0A0A08] flex flex-col select-none">
       <Header />
       <main className="grow">
         <Outlet />

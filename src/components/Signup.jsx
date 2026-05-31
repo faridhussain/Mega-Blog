@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Button, Input } from './index.js'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
+import { MoveRight } from 'lucide-react';
 
 export default function Signup() {
     const dispatch = useDispatch()
@@ -33,87 +34,93 @@ export default function Signup() {
     }
 
     return (
-        <div className='min-h-[70vh] flex justify-center items-center flex-col gap-2'>
-            <div className='w-fit mx-auto rounded-md py-15 px-10 shadow-2xl'>
-                <h2 className='text-3xl font-bold'>Sign up to create account</h2>
-                <p  className='text-[#555555] text-lg mb-5'>
+        <div className='min-h-[75vh] flex justify-center items-center flex-col gap-2 md:p-5 p-3'>  
+            <div className='w-full max-w-170 mx-auto rounded-md md:p-10 p-4 border border-[#383733] flex flex-col gap-2'>
+                <h2 className='md:text-3xl sm:text-2xl text-xl font-bold text-center text-white'>Sign up to create account</h2>
+                <p className='text-[#595650] md:text-lg sm:text-base text-sm mb-12 text-center'>
                     Already have an account?&nbsp;
-                    <Link className='text-[#4A6CF7] font-bold hover:underline' to='/login'>Sign In</Link>
+                    <Link className='text-[#DB9258] outline-none font-semibold hover:text-[#be7e4a] duration-300 italic inline-flex items-center gap-1' to='/login'>Sign In<MoveRight size={16} /></Link>
                 </p>
                 <form autoComplete='off' onSubmit={handleSubmit(create)}>
-                    <div className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-5'>
 
-                        {/* Input for full name */}
-                        <Input 
-                            className='w-100'
-                            label='Full name:'
-                            autoComplete='off'
-                            placeholder='Enter your full name'
-                            { ...register('name', {
-                                required: 'Full name is required',
-                                minLength: {
-                                    value: 5,
-                                    message: 'Full name must be at least 5 characters'
-                                },
-                                validate: (value) =>
-                                    value.trim().split(' ').length >= 2 ||
-                                    'Please enter your first and last name'
-                            }) }
-                        />
-                        {errors.name && (
-                            <p className='text-red-600 text-sm'>
-                                {errors.name.message}
-                            </p>
-                        )}
+                        <div className='flex flex-col gap-2'>
+                            {/* Input for full name */}
+                            <Input 
+                                className='w-full'
+                                label='Full name:'
+                                autoComplete='off'
+                                placeholder='Enter your full name'
+                                { ...register('name', {
+                                    required: 'Full name is required',
+                                    minLength: {
+                                        value: 5,
+                                        message: 'Full name must be at least 5 characters'
+                                    },
+                                    validate: (value) =>
+                                        value.trim().split(/\s+/).length >= 2 ||
+                                        'Please enter your first and last name'
+                                }) }
+                            />
+                            {errors.name && (
+                                <p className='text-red-500 text-sm pl-1'>
+                                    {errors.name.message}
+                                </p>
+                            )}
+                        </div>
 
-                        {/* Input for email */}
-                        <Input
-                            autoComplete='new-email'
-                            label='Email: '
-                            type='email'
-                            className='w-100'
-                            placeholder='Enter your email'
-                            { ...register('email', {
-                                required: 'Email is required',
-                                validate: {
-                                    matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'Email address must be a valid address'
-                                }
-                            }) }
-                        />
-                        {errors.email && (
-                            <p className='text-red-600 text-sm'>
-                                {errors.email.message}
-                            </p>
-                        )}
+                        <div className='flex flex-col gap-2'>
+                            {/* Input for email */}
+                            <Input
+                                autoComplete='new-email'
+                                label='Email Address: '
+                                type='email'
+                                className='w-full'
+                                placeholder='Enter your email'
+                                { ...register('email', {
+                                    required: 'Email is required',
+                                    validate: {
+                                        matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'Email address must be a valid address'
+                                    }
+                                }) }
+                            />
+                            {errors.email && (
+                                <p className='text-red-500 text-sm pl-1'>
+                                    {errors.email.message}
+                                </p>
+                            )}
+                        </div>
 
-                        {/* input for password */}
-                        <Input 
-                            label='Password: '
-                            type='password'
-                            className='w-100'
-                            autoComplete='new-password'
-                            placeholder='Enter your password'
-                            { ...register('password', {
-                                required: 'Password is required',
-                                minLength: {
-                                    value: 8,
-                                    message: 'Password must be at least 8 characters'
-                                }
-                            }) }
-                        />
-                        {errors.password && (
-                            <p className='text-red-600 text-sm'>
-                                {errors.password.message}
-                            </p>
-                        )}
+                        <div className='flex flex-col gap-2'>
+                            {/* input for password */}
+                            <Input 
+                                label='Password: '
+                                type='password'
+                                className='w-full'
+                                autoComplete='new-password'
+                                placeholder='Enter your password'
+                                { ...register('password', {
+                                    required: 'Password is required',
+                                    minLength: {
+                                        value: 8,
+                                        message: 'Password must be at least 8 characters'
+                                    }
+                                }) }
+                            />
+                            {errors.password && (
+                                <p className='text-red-500 text-sm pl-1'>
+                                    {errors.password.message}
+                                </p>
+                            )}
+                        </div>
 
                         {error && (
-                            <p className='text-red-600 text-sm'>
+                            <p className='text-red-500 text-sm pl-1'>
                                 {error}
                             </p>
                         )}
 
-                        <Button type='submit' className='w-full'>Create Account</Button>
+                        <Button type='submit' className='w-full outline-none mt-3'>Create Account</Button>
                     </div> 
                 </form>
             </div>

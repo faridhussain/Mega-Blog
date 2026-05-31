@@ -18,8 +18,8 @@ export default function Home() {
     if (posts.length === 0) {
         return (
             <Container>
-                <div className='flex justify-center items-center min-h-[70vh]'>
-                    <h1 className='text-gray-700 text-3xl font-bold'>
+                <div className='flex justify-center items-center min-h-[75vh]'>
+                    <h1 className='text-gray-300 text-3xl font-bold'>
                         { authStatus ?  'No posts available!' : 'Login to read posts' }
                     </h1>
                 </div>

@@ -35,17 +35,17 @@ export default function Header() {
     ]
 
     return (
-        <header className='py-4 px-8 sticky top-0 left-0 z-100 bg-white border-b-2 border-b-[#E5E3DC]'>
+        <header className='md:py-4 md:px-8 py-2 px-3 sticky top-0 left-0 z-100 bg-[#0A0A08] border-b-2 border-b-[#151513]'>
             <Container>
-                <nav className='flex justify-between items-center'>
+                <nav className='flex justify-between gap-5 items-center'>
                     <div>
-                        <NavLink to='/' className='text-3xl font-semibold'>Mega Blog</NavLink>
+                        <NavLink to='/' className='md:text-3xl text-xl font-semibold text-white'>Mega <span className='text-[#E05C2A]'>Blog</span></NavLink>
                     </div>
-                    <ul className='flex gap-7 items-center'>
+                    <ul className='flex md:gap-7 gap-3 items-center'>
                         {navItems.map(item => (
                             item.active ? (
                                 <li key={item.name}>
-                                    <NavLink to={item.slug} className={({ isActive }) => `duration-300 text-lg font-medium ${ isActive ? 'text-[#5C7CF8]' : 'text-[#61615e] hover:text-[#5C7CF8]'}`}>{item.name}</NavLink>
+                                    <NavLink to={item.slug} className={({ isActive }) => `uppercase md:text-base text-xs duration-300  font-medium ${ isActive ? 'text-[#E05C2A]' : 'text-[#6B6760] hover:text-[#E7E4DE]'}`}>{item.name}</NavLink>
                                 </li>
                             ) : null
                         ))}

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { login as authLogin } from '../store/authSlice.js'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Input } from './index.js'
+import { MoveRight } from 'lucide-react';
 
 export default function Login() {
     const navigate = useNavigate()
@@ -32,59 +33,60 @@ export default function Login() {
         }
     }
 
-    return (
-        <div className=' min-h-[70vh] flex justify-center items-center flex-col gap-2'>
-            <div className='w-fit mx-auto rounded-md py-15 px-10 shadow-2xl'>
-                <h2 className='text-3xl font-bold'>Sign in to your account</h2>
-                <p className='text-[#555555] text-lg mb-5'>
+    return (    
+        <div className='min-h-[75vh] flex justify-center items-center flex-col gap-2 md:p-5 p-3'>
+            <div className='w-full max-w-170 mx-auto rounded-md md:p-10 p-4 flex flex-col gap-2 border border-[#383733]'>
+                <h2 className='md:text-3xl sm:text-2xl text-xl font-bold text-center text-white'>Sign in to your account</h2>
+                <p className='text-[#595650] md:text-lg sm:text-base text-sm mb-12 text-center'>
                     Don&apos;t have an account?&nbsp;
-                    <Link className='text-[#4A6CF7] font-bold hover:underline' to='/signup'>Sign Up</Link>
-                </p>
+                    <Link className='text-[#DB9258] outline-none font-semibold hover:text-[#be7e4a] duration-300 italic inline-flex items-center gap-1' to='/signup'>Sign Up<MoveRight size={16} /></Link>
+                </p>                        
                 <form autoComplete='off' onSubmit={handleSubmit(login)}>
-                    <div className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-5'>
+                        <div className='flex flex-col gap-2'>
+                            {/* Input for email */}
+                            <Input
+                                label='Email Address: '
+                                type='email'
+                                autoComplete='new-email'
+                                className='w-full'
+                                placeholder='Enter your email'
+                                {...register('email', {
+                                    required: 'Email is required',
+                                    validate: {
+                                        matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'Please enter a valid email'
+                                    }
+                                })}
+                            />
+                            {errors.email && (
+                                <p className='text-red-500 text-sm pl-1'>{errors.email.message}</p>
+                            )}
+                        </div>
 
-                        {/* Input for email */}
-                        <Input
-                            label='Email: '
-                            type='email'
-                            autoComplete='new-email'
-                            className='w-100'
-                            placeholder='Enter your email'
-                            {...register('email', {
-                                required: 'Email is required',
-                                validate: {
-                                    matchPattern: (value) =>
-                                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)
-                                        || 'Please enter a valid email'
-                                }
-                            })}
-                        />
-                        {errors.email && (
-                            <p className='text-red-600 text-sm'>{errors.email.message}</p>
-                        )}
+                        <div className='flex flex-col gap-2'>
+                            {/* Input for password */}
+                            <Input 
+                                className='w-full'
+                                label='Password: '
+                                autoComplete='new-password'
+                                type='password'
+                                placeholder='Enter your password'
+                                {...register('password', {
+                                    required: 'Password is required',
+                                    minLength: {
+                                        value: 8,
+                                        message: 'Password must be at least 8 characters'
+                                    }
+                                })}
+                            />
+                            {errors.password && (
+                                <p className='text-red-500 text-sm pl-1'>{errors.password.message}</p>
+                            )}
+                        </div>
+                            
+                        {error && <p className='text-red-500'>{error}</p>}
 
-                        {/* Input for password */}
-                        <Input 
-                            className='w-100'
-                            label='Password: '
-                            autoComplete='new-password'
-                            type='password'
-                            placeholder='Enter your password'
-                            {...register('password', {
-                                required: 'Password is required',
-                                minLength: {
-                                    value: 8,
-                                    message: 'Password must be at least 8 characters'
-                                }
-                            })}
-                        />
-                        {errors.password && (
-                            <p className='text-red-600 text-sm'>{errors.password.message}</p>
-                        )}
-                        
-                        {error && <p className='text-red-600'>{error}</p>}
-
-                        <Button type='submit' className='w-full'>Sign In</Button>
+                        <Button type='submit' className='w-full outline-none mt-3'>Sign In</Button>
                     </div>  
                 </form>
             </div>
