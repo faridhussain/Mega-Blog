@@ -10,7 +10,7 @@ export default function Signup() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [error, setError] = useState('')
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     const create = async (data) => {
         setError('')
@@ -24,7 +24,11 @@ export default function Signup() {
                 navigate('/')
             }
         } catch (error) {
-            setError(error.message)
+            if (error.message.includes('already exists')) {
+                setError('An account with this email already exists')
+            } else {
+                setError('Something went wrong. Please try again.')
+            }
         }
     }
 
@@ -36,9 +40,9 @@ export default function Signup() {
                     Already have an account?&nbsp;
                     <Link className='text-[#4A6CF7] font-bold hover:underline' to='/login'>Sign In</Link>
                 </p>
-                {error && <p className='text-red-600'>{error}</p>}
                 <form autoComplete='off' onSubmit={handleSubmit(create)}>
                     <div className='flex flex-col gap-4'>
+
                         {/* Input for full name */}
                         <Input 
                             className='w-100'
@@ -46,9 +50,22 @@ export default function Signup() {
                             autoComplete='off'
                             placeholder='Enter your full name'
                             { ...register('name', {
-                                required: true
+                                required: 'Full name is required',
+                                minLength: {
+                                    value: 5,
+                                    message: 'Full name must be at least 5 characters'
+                                },
+                                validate: (value) =>
+                                    value.trim().split(' ').length >= 2 ||
+                                    'Please enter your first and last name'
                             }) }
                         />
+                        {errors.name && (
+                            <p className='text-red-600 text-sm'>
+                                {errors.name.message}
+                            </p>
+                        )}
+
                         {/* Input for email */}
                         <Input
                             autoComplete='new-email'
@@ -57,12 +74,18 @@ export default function Signup() {
                             className='w-100'
                             placeholder='Enter your email'
                             { ...register('email', {
-                                required: true,
+                                required: 'Email is required',
                                 validate: {
                                     matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'Email address must be a valid address'
                                 }
                             }) }
                         />
+                        {errors.email && (
+                            <p className='text-red-600 text-sm'>
+                                {errors.email.message}
+                            </p>
+                        )}
+
                         {/* input for password */}
                         <Input 
                             label='Password: '
@@ -71,9 +94,25 @@ export default function Signup() {
                             autoComplete='new-password'
                             placeholder='Enter your password'
                             { ...register('password', {
-                                required: true
+                                required: 'Password is required',
+                                minLength: {
+                                    value: 8,
+                                    message: 'Password must be at least 8 characters'
+                                }
                             }) }
                         />
+                        {errors.password && (
+                            <p className='text-red-600 text-sm'>
+                                {errors.password.message}
+                            </p>
+                        )}
+
+                        {error && (
+                            <p className='text-red-600 text-sm'>
+                                {error}
+                            </p>
+                        )}
+
                         <Button type='submit' className='w-full'>Create Account</Button>
                     </div> 
                 </form>

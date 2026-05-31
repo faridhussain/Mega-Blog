@@ -9,7 +9,7 @@ import { Button, Input } from './index.js'
 export default function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const [error, setError] = useState('')
 
     const login = async (data) => {
@@ -24,7 +24,11 @@ export default function Login() {
                 navigate('/')
             }
         } catch (error) {
-            setError(error.message)
+            if (error.message.includes('Invalid credentials')) {
+                setError('Invalid email or password')
+            } else {
+                setError('Something went wrong. Please try again.')
+            }
         }
     }
 
@@ -36,32 +40,50 @@ export default function Login() {
                     Don&apos;t have an account?&nbsp;
                     <Link className='text-[#4A6CF7] font-bold hover:underline' to='/signup'>Sign Up</Link>
                 </p>
-                {error && <p className='text-red-600'>{error}</p>}
                 <form autoComplete='off' onSubmit={handleSubmit(login)}>
                     <div className='flex flex-col gap-4'>
+
+                        {/* Input for email */}
                         <Input
                             label='Email: '
                             type='email'
                             autoComplete='new-email'
                             className='w-100'
                             placeholder='Enter your email'
-                            { ...register('email', {
-                                required: true,
+                            {...register('email', {
+                                required: 'Email is required',
                                 validate: {
-                                    matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'Email address must be a valid address'
+                                    matchPattern: (value) =>
+                                        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)
+                                        || 'Please enter a valid email'
                                 }
-                            }) }
+                            })}
                         />
+                        {errors.email && (
+                            <p className='text-red-600 text-sm'>{errors.email.message}</p>
+                        )}
+
+                        {/* Input for password */}
                         <Input 
                             className='w-100'
                             label='Password: '
                             autoComplete='new-password'
                             type='password'
                             placeholder='Enter your password'
-                            { ...register('password', {
-                                required: true
-                            }) }
+                            {...register('password', {
+                                required: 'Password is required',
+                                minLength: {
+                                    value: 8,
+                                    message: 'Password must be at least 8 characters'
+                                }
+                            })}
                         />
+                        {errors.password && (
+                            <p className='text-red-600 text-sm'>{errors.password.message}</p>
+                        )}
+                        
+                        {error && <p className='text-red-600'>{error}</p>}
+
                         <Button type='submit' className='w-full'>Sign In</Button>
                     </div>  
                 </form>
