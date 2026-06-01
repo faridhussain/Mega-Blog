@@ -26,7 +26,7 @@ export default function AllPosts() {
     return (
         <div>
             <Container>
-                <div className='flex flex-wrap gap-2 p-3'>
+                <div className='flex flex-wrap gap-3 p-5'>
                     {posts.map((post) => (
                         <PostCard key={post.$id} {...post} />
                     ))}
