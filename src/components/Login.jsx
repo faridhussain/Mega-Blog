@@ -5,31 +5,36 @@ import { useState } from 'react'
 import { login as authLogin } from '../store/authSlice.js'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Input } from './index.js'
-import { MoveRight } from 'lucide-react';
+import { MoveRight, Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm()
     const [error, setError] = useState('')
 
     const login = async (data) => {
         setError('')
+        setLoading(true)
         try {
             const session = await authService.login(data)
             if (session) {
                 const userData = await authService.getCurrentUser()
                 if (userData) {
                     dispatch(authLogin({userData}))
+                    navigate('/')
                 }
-                navigate('/')
             }
         } catch (error) {
-            if (error.message.includes('Invalid credentials')) {
+            if (error?.message?.includes('Invalid credentials')) {
                 setError('Invalid email or password')
             } else {
                 setError('Something went wrong. Please try again.')
             }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -39,22 +44,23 @@ export default function Login() {
                 <h2 className='md:text-3xl sm:text-2xl text-xl font-bold text-center text-white'>Sign in to your account</h2>
                 <p className='text-[#595650] md:text-lg sm:text-base text-sm mb-12 text-center'>
                     Don&apos;t have an account?&nbsp;
-                    <Link className='text-[#DB9258] outline-none font-semibold hover:text-[#be7e4a] duration-300 italic inline-flex items-center gap-1' to='/signup'>Sign Up<MoveRight size={16} /></Link>
+                    <Link className='group text-[#DB9258] outline-none font-semibold duration-300 italic inline-flex items-center gap-1' to='/signup'>Sign Up<MoveRight className='transition-transform duration-300 group-hover:translate-x-0.5' size={16} /></Link>
                 </p>                        
                 <form autoComplete='off' onSubmit={handleSubmit(login)}>
                     <div className='flex flex-col gap-5'>
+
+                        {/* Input for email */}
                         <div className='flex flex-col gap-2'>
-                            {/* Input for email */}
                             <Input
                                 label='Email Address: '
                                 type='email'
-                                autoComplete='new-email'
+                                autoComplete='email'
                                 className='w-full'
                                 placeholder='Enter your email'
                                 {...register('email', {
                                     required: 'Email is required',
                                     validate: {
-                                        matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) || 'Please enter a valid email'
+                                        matchPattern: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'Please enter a valid email'
                                     }
                                 })}
                             />
@@ -63,30 +69,44 @@ export default function Login() {
                             )}
                         </div>
 
+                        {/* Input for password */}
                         <div className='flex flex-col gap-2'>
-                            {/* Input for password */}
-                            <Input 
-                                className='w-full'
-                                label='Password: '
-                                autoComplete='new-password'
-                                type='password'
-                                placeholder='Enter your password'
-                                {...register('password', {
-                                    required: 'Password is required',
-                                    minLength: {
-                                        value: 8,
-                                        message: 'Password must be at least 8 characters'
-                                    }
-                                })}
-                            />
+                            <div className='relative'>
+                                <Input
+                                    label='Password: '
+                                    className='w-full'
+                                    autoComplete='current-password'
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder='Enter your password'
+                                    {...register('password', {
+                                        required: 'Password is required',
+                                        minLength: {
+                                            value: 8,
+                                            message: 'Password must be at least 8 characters'
+                                        }
+                                    })}
+                                />
+
+                                <button
+                                    type='button'
+                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                                    onClick={() => setShowPassword(prev => !prev)}
+                                    className='absolute right-3 top-[70%] -translate-y-1/2 text-[#777]'
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
+
                             {errors.password && (
-                                <p className='text-red-500 text-sm pl-1'>{errors.password.message}</p>
+                                <p className='text-red-500 text-sm pl-1'>
+                                    {errors.password.message}
+                                </p>
                             )}
                         </div>
                             
                         {error && <p className='text-red-500'>{error}</p>}
 
-                        <Button type='submit' className='w-full outline-none mt-3'>Sign In</Button>
+                        <Button disabled={loading} type='submit' className='w-full outline-none mt-3'>{loading ? 'Signing in...' : 'Sign In'}</Button>
                     </div>  
                 </form>
             </div>
