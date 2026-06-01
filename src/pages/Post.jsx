@@ -4,10 +4,12 @@ import { Button, Container } from '../components/index.js'
 import parse from 'html-react-parser'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import { Trash, SquarePen, Loader2 } from 'lucide-react';
 
 export default function Post() {
     const [post, setPost] = useState(null)
     const { slug } = useParams()
+    const [isDeleting, setIsDeleting] = useState(false)
     const navigate = useNavigate()
 
     const userData = useSelector(
@@ -30,35 +32,58 @@ export default function Post() {
         }
     }, [slug, navigate])
 
-    const deletePost = () => {
-        appwriteService.deletePost(post.$id).then((status) => {
-            if (status) {
-                appwriteService.deleteFile(post.featuredImage)
-                navigate('/')
-            }
-        })
+    const deletePost = async () => {
+        const confirmDelete = window.confirm(
+            'Are you sure you want to delete this post?'
+        )
+        if (!confirmDelete) return
+        
+        setIsDeleting(true)
+
+        const status = await appwriteService.deletePost(post.$id)
+        if (status) {
+            await appwriteService.deleteFile(post.featuredImage)
+            navigate('/')
+        }
+        setIsDeleting(false)
     }
 
     return post ? (
         <Container>
-            <div className='mx-auto w-[80%] py-10'>
-                <div className='relative mb-5 overflow-hidden rounded-xl'>
-                    <img
-                        src={appwriteService.getFilePreview(post.featuredImage)}
-                        alt={post.title}
-                        className='w-full h-fit object-cover rounded-xl'
-                    />
-                    {isAuthor && (
-                        <div className='absolute top-4 right-4 flex gap-3'>
-                            <Link to={`/edit-post/${post.$id}`}>
-                                <Button bgColor='bg-green-600'> Edit </Button>
-                            </Link>
-                            <Button bgColor='bg-red-500' onClick={deletePost}>Delete</Button>
+            <div className='mx-auto w-[60%] py-5'>
+                <div className='mx-auto max-w-fit'>
+                    <div className='mb-6 flex flex-col items-center'>
+                        <h1 className='text-4xl font-bold mb-4 text-[#E05C2A] capitalize select-text selection:bg-[#E05C2A] selection:text-white'>{post.title}</h1>
+                        <div className='relative inline-block'>
+                            <img
+                                src={appwriteService.getFilePreview(post.featuredImage)}
+                                alt={post.title}
+                                className='max-h-125 w-auto object-contain rounded-xl border border-[#383733]'
+                            />
+                            {isAuthor && (
+                                <div className='absolute top-4 right-4 flex gap-3'>
+                                    <Link to={`/edit-post/${post.$id}`}>
+                                        <Button className='p-2!' bgColor='bg-green-600' hoverEffect='hover:shadow-[0_0_15px_rgba(34,197,94,0.6)]'><SquarePen /></Button>
+                                    </Link>
+                                    <Button
+                                        className='p-2!'
+                                        onClick={deletePost}
+                                        disabled={isDeleting}
+                                        bgColor='bg-red-500'
+                                        hoverEffect='hover:shadow-[0_0_15px_rgba(239,68,68,0.6)]'
+                                    >
+                                        {isDeleting ? (
+                                            <Loader2 className='animate-spin' />
+                                        ) : (
+                                            <Trash />
+                                        )}
+                                    </Button>
+                                </div>
+                            )}  
                         </div>
-                    )}
-                </div>  
-                <h1 className='text-4xl font-bold mb-8'>{post.title}</h1>
-                <div className='text-lg leading-8 text-gray-700'>{parse(post.content)}</div>
+                    </div>  
+                    <div className='text-lg leading-9 text-gray-400 select-text selection:bg-white selection:text-black'>{parse(post.content)}</div>
+                </div>
             </div>
         </Container>
     ) : null
