@@ -27,42 +27,53 @@ export default function PostForm({ post = null }) {
 
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const [imagePreview, setImagePreview] = useState(
         post ? appwriteService.getFilePreview(post.featuredImage) : null
     )
 
     const submit = async (data) => {
-        if (post) {
-            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
+        setIsSubmitting(true)
 
-            if (file) {
-                appwriteService.deleteFile(post.featuredImage)
-            }
+        try {
+            if (post) {
+                const file = data.image[0]
+                    ? await appwriteService.uploadFile(data.image[0])
+                    : null
 
-            const dbPost = await appwriteService.updatePost(post.$id, {
-                ...data,
-                featuredImage: file ? file.$id : undefined
-            })
+                if (file) {
+                    await appwriteService.deleteFile(post.featuredImage)
+                }
 
-            if (dbPost) {
-                navigate(`/post/${dbPost.$id}`)
-            }
-        } else {
-            const file = await appwriteService.uploadFile(data.image[0])
-            if (file) {
-                const fileId = file.$id
-                data.featuredImage = fileId
-
-                const dbPost = await appwriteService.createPost({
+                const dbPost = await appwriteService.updatePost(post.$id, {
                     ...data,
-                    userId: userData.$id
+                    featuredImage: file ? file.$id : undefined
                 })
 
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`)
                 }
+            } else {
+                const file = await appwriteService.uploadFile(data.image[0])
+
+                if (file) {
+                    data.featuredImage = file.$id
+
+                    const dbPost = await appwriteService.createPost({
+                        ...data,
+                        userId: userData.$id
+                    })
+
+                    if (dbPost) {
+                        navigate(`/post/${dbPost.$id}`)
+                    }
+                }
             }
+        } catch (error) {
+            console.log('Post submit error:', error)
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -218,7 +229,10 @@ export default function PostForm({ post = null }) {
                                 : 'hover:shadow-[0_0_20px_rgba(219,146,88,0.3)]'
                         }
                     >
-                        {post ? 'Update Post' : 'Publish Post'}
+                        {isSubmitting
+                            ? (post ? 'Updating...' : 'Publishing...')
+                            : (post ? 'Update Post' : 'Publish Post')
+                        }
                     </Button>
                 </div>  
             </div>
