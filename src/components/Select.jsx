@@ -25,7 +25,7 @@ export default function Select({
             <button
                 type='button'
                 onClick={() => setOpen(!open)}
-                className='w-full mt-1 border border-[#292926] bg-[#0E0D09] hover:border-[#40403a] rounded-xl p-3 flex items-center justify-between focus:border-[#716f65] text-gray-400 md:text-base sm:text-sm text-sm duration-300'
+                className='w-full mt-1 border border-[#292926] bg-[#0E0D09] hover:border-[#40403a] rounded-md p-3 flex items-center justify-between focus:border-[#716f65] text-gray-400 md:text-base sm:text-sm text-sm duration-300'
             >
                 <div className='flex items-center gap-3'>
                     {value && (
@@ -42,7 +42,7 @@ export default function Select({
             </button>
 
             {open && (
-                <div className='absolute mt-2 w-full overflow-hidden rounded-xl border border-[#4a4a4a] bg-[#1a1a1a] z-50'>
+                <div className='absolute mt-2 w-full overflow-hidden rounded-md border border-[#4a4a4a] bg-[#1a1a1a] z-50'>
                     {options.map((option) => (
                         <button
                             key={option}

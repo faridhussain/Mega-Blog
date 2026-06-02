@@ -77,7 +77,7 @@ export default function Post() {
                             <img
                                 src={appwriteService.getFilePreview(post.featuredImage)}
                                 alt={post.title}
-                                className='max-h-125 w-auto object-contain rounded-xl border border-[#383733]'
+                                className='max-h-125 w-auto object-contain rounded-md border border-[#383733]'
                             />
                             {isAuthor && (
                                 <div className='absolute top-4 right-4 flex gap-3'>

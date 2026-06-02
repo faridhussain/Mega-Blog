@@ -41,11 +41,11 @@ export default function Header() {
                     <div>
                         <NavLink to='/' className='md:text-3xl text-xl font-black text-white'>Mega <span className='text-[#E05C2A]'>Blog</span></NavLink>
                     </div>
-                    <ul className='flex md:gap-7 gap-3 items-center'>
+                    <ul className='flex md:gap-6 gap-3 items-center'>
                         {navItems.map(item => (
                             item.active ? (
                                 <li key={item.name}>
-                                    <NavLink to={item.slug} className={({ isActive }) => `uppercase md:text-lg text-sm duration-300  font-semibold ${ isActive ? 'text-[#E05C2A]' : 'text-[#6B6760] hover:text-[#E7E4DE]'}`}>{item.name}</NavLink>
+                                    <NavLink to={item.slug} className={({ isActive }) => `uppercase md:text-base text-sm duration-300  font-semibold ${ isActive ? 'text-[#E05C2A]' : 'text-[#6B6760] hover:text-[#E7E4DE]'}`}>{item.name}</NavLink>
                                 </li>
                             ) : null
                         ))}

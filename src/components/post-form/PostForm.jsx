@@ -149,12 +149,12 @@ export default function PostForm({ post = null }) {
                     </p>
                 )}
             </div>
-            <div className='w-1/4 border border-[#383733] flex flex-col gap-5 rounded-2xl p-6 bg-[#0E0D09]'>
+            <div className='w-1/4 border border-[#383733] flex flex-col gap-5 rounded-md p-6 bg-[#0E0D09]'>
                 <label className='font-medium text-[#595650] uppercase'>Featured Image</label>
                 {!imagePreview && (
                     <label
                         htmlFor='image-upload'
-                        className='h-52 border-2 border-dashed border-[#4a4a4a] rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-[#E05C2A] duration-300'
+                        className='h-52 border-2 border-dashed border-[#4a4a4a] rounded-md flex flex-col items-center justify-center cursor-pointer hover:border-[#E05C2A] duration-300'
                     >
                         <ImageIcon size={40} className='text-gray-400 mb-3' />
                         <span className='text-gray-300 font-medium'>Click to upload</span>
@@ -186,7 +186,7 @@ export default function PostForm({ post = null }) {
                     <img
                         src={imagePreview}
                         alt='Preview'
-                        className='max-h-72 w-auto object-contain mt-4 rounded-xl border border-[#383733]'
+                        className='max-h-72 w-auto object-contain mt-4 rounded-md border border-[#383733]'
                     />
                 )}
                 <div className='border-t border-[#383733]' />
