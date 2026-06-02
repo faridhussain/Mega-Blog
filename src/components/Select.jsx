@@ -1,34 +1,77 @@
-import React, { useId } from 'react'
+import { useState } from 'react'
+import { ChevronDown, ChevronUp, Check } from 'lucide-react'
 
-function Select({
+export default function Select({
     options,
-    label,
-    className = '',
-    ...props
-}, ref) {
-    const id = useId()
+    value,
+    onChange,
+    label
+}) {
+    const [open, setOpen] = useState(false)
+
+    const getDotColor = (status) => {
+        if (status === 'active') return 'bg-green-500'
+        return 'bg-orange-500'
+    }
 
     return (
-        <div className='flex gap-1 items-center'>
-            {label && <label className='font-medium' htmlFor={id}>{label}:</label>}
-            <select 
-                id={id} 
-                ref={ref} 
-                {...props} 
-                className={`outline-none rounded-md py-1 pr-8 border border-[#555555] hover:border-black duration-300 ${className}`}
-            >
-                <option value='' disabled>
-                    Choose status
-                </option>
+        <div className='relative w-full'>
+            {label && (
+                <label className='font-medium text-[#595650] uppercase tracking-wider text-sm'>
+                    {label}
+                </label>
+            )}
 
-                {options?.map((option) => (
-                    <option value={option} key={option}>
-                        {option}
-                    </option>
-                ))}
-            </select>
+            <button
+                type='button'
+                onClick={() => setOpen(!open)}
+                className='w-full mt-1 border border-[#292926] bg-[#0E0D09] hover:border-[#40403a] rounded-xl p-3 flex items-center justify-between focus:border-[#716f65] text-gray-400 md:text-base sm:text-sm text-sm duration-300'
+            >
+                <div className='flex items-center gap-3'>
+                    {value && (
+                        <div className={`w-3 h-3 rounded-full ${getDotColor(value)}`}/>
+                    )}
+                    <span className='text-[#99A1AF] font-medium capitalize'>{value || 'Choose status'}</span>
+                </div>
+                <ChevronDown
+                    size={20}
+                    className={`text-gray-400 transition-transform duration-300 ease-in-out ${
+                        open ? 'rotate-180' : ''
+                    }`}
+                />
+            </button>
+
+            {open && (
+                <div className='absolute mt-2 w-full overflow-hidden rounded-xl border border-[#4a4a4a] bg-[#1a1a1a] z-50'>
+                    {options.map((option) => (
+                        <button
+                            key={option}
+                            type='button'
+                            onClick={() => {
+                                onChange(option)
+                                setOpen(false)
+                            }}
+                            className='w-full px-4 py-4 flex cursor-pointer items-center justify-between hover:bg-[#262626] duration-200'
+                        >
+                            <div className='flex items-center gap-3'>
+                                <div
+                                    className={`w-3 h-3 rounded-full ${getDotColor(option)}`}
+                                />
+                                <span className='text-white capitalize'>
+                                    {option}
+                                </span>
+                            </div>
+
+                            {value === option && (
+                                <Check
+                                    size={20}
+                                    className='text-green-500'
+                                />
+                            )}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }
-
-export default React.forwardRef(Select)

@@ -4,9 +4,19 @@ import { Button, Input, RTE, Select } from '../index.js'
 import appwriteService from '../../appwrite/config.js'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { ImageIcon, ChevronDown, ChevronUp, Check } from 'lucide-react'
+
 
 export default function PostForm({ post = null }) {
-    const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
+    const {
+        register,
+        handleSubmit,
+        watch,
+        setValue,
+        control,
+        getValues,
+        formState: { errors }
+    } = useForm({
         defaultValues: {
             title: post?.title || '',
             slug: post?.$id || '',
@@ -23,8 +33,6 @@ export default function PostForm({ post = null }) {
     )
 
     const submit = async (data) => {
-        console.log(data)
-
         if (post) {
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
@@ -42,7 +50,6 @@ export default function PostForm({ post = null }) {
             }
         } else {
             const file = await appwriteService.uploadFile(data.image[0])
-
             if (file) {
                 const fileId = file.$id
                 data.featuredImage = fileId
@@ -78,24 +85,37 @@ export default function PostForm({ post = null }) {
         }
     }, [watch, slugTransform, setValue])
 
+    useEffect(() => {
+        register('status', {
+            required: 'Status is required'
+        })
+    }, [register])
+
     return (
-        <form autoComplete='off' className='flex gap-5 items-center py-5 px-10' onSubmit={handleSubmit(submit)}>
-            <div className='flex flex-col gap-3 w-3/4'>
+        <form autoComplete='off' className='flex gap-5 items-center justify-center py-4 px-6' onSubmit={handleSubmit(submit)}>
+            <div className='flex flex-col gap-2 w-3/4'>
                 <Input
                     label = 'Title: '
                     placeholder = 'Title'
                     className = ''
-                    { ...register('title', {
-                        required: true
+                    {...register('title', {
+                        required: 'Title is required',
+                        minLength: {
+                            value: 3,
+                            message: 'Title must be at least 3 characters'
+                        }
                     })}
                 />
+                {errors.title && (
+                    <p className='text-red-500 text-sm mb-2'>
+                        {errors.title.message}
+                    </p>
+                )}
                 <Input
                     label = 'Slug: '
                     placeholder = 'Slug'
-                    className = ''
-                    { ...register('slug', {
-                        required: true
-                    })}
+                    className = 'mb-3'
+                    { ...register('slug')}
                     onInput={(e) => {
                         setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true })
                     }}
@@ -105,60 +125,83 @@ export default function PostForm({ post = null }) {
                     name='content' 
                     control={control} 
                     defaultValue={getValues('content')} 
+                    rules={{
+                        required: 'Content is required',
+                        validate: (value) =>
+                            value.replace(/<[^>]*>/g, '').trim().length >= 10 ||
+                            'Content must be at least 10 characters'
+                    }}
                 />
+                {errors.content && (
+                    <p className='text-red-500 text-md'>
+                        {errors.content.message}
+                    </p>
+                )}
             </div>
-            <div className='flex flex-col gap-5 w-1/4'>
-                <div className='flex flex-col gap-2'>
-                    <label className='font-medium text-lg'>
-                        Featured Image:
-                    </label>
-
+            <div className='w-1/4 border border-[#383733] flex flex-col gap-5 rounded-2xl p-6 bg-[#0E0D09]'>
+                <label className='font-medium text-[#595650] uppercase'>Featured Image</label>
+                {!imagePreview && (
                     <label
                         htmlFor='image-upload'
-                        className='px-4 py-2 bg-[#4A6CF7] text-white w-50 rounded-md font-medium cursor-pointer hover:opacity-90 duration-300 text-center'
+                        className='h-52 border-2 border-dashed border-[#4a4a4a] rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-[#E05C2A] duration-300'
                     >
-                        {post ? 'Update Image' : 'Upload Image'}
+                        <ImageIcon size={40} className='text-gray-400 mb-3' />
+                        <span className='text-gray-300 font-medium'>Click to upload</span>
+                        <span className='text-sm text-gray-500'>PNG, JPG, GIF</span>
                     </label>
-
-                    <input
-                        id='image-upload'
-                        type='file'
-                        accept='image/png, image/jpeg, image/gif'
-                        className='hidden'
-                        {...register('image', {
-                            required: !post,
-                            onChange: (e) => {
-                                const file = e.target.files[0]
-
-                                if (file) {
-                                    setImagePreview(URL.createObjectURL(file))
-                                }
-                            }
-                        })}
-                    />
-                </div>
-                {imagePreview && (
-                    <div>
-                        <img
-                            src={imagePreview}
-                            alt='Preview'
-                            className='rounded-md'
-                        />
-                    </div>
                 )}
-                <Select 
-                    options={['active', 'inactive']}
-                    label='Status'
-                    className=''
-                    { ...register('status', {
-                        required: true
-                    }) }
+                <input
+                    id='image-upload'
+                    type='file'
+                    accept='image/png, image/jpeg, image/gif'
+                    className='hidden'  
+                    {...register('image', {
+                        required: !post ? 'Featured image is required' : false,
+                        onChange: (e) => {
+                            const file = e.target.files?.[0]
+
+                            if (file) {
+                                setImagePreview(URL.createObjectURL(file))
+                            }
+                        }
+                    })}
                 />
+                {errors.image && (
+                    <p className='text-red-500 text-sm'>
+                        {errors.image.message}
+                    </p>
+                )}
+                {imagePreview && (
+                    <img
+                        src={imagePreview}
+                        alt='Preview'
+                        className='max-h-72 w-auto object-contain mt-4 rounded-xl border border-[#383733]'
+                    />
+                )}
+                <div className='border-t border-[#383733]' />
+                <div className='flex flex-col gap-2'>
+                    <Select
+                        label='Status:'
+                        options={['active', 'inactive']}
+                        value={watch('status')}
+                        onChange={(value) =>
+                            setValue('status', value, {
+                                shouldValidate: true
+                            })
+                        }
+                    />
+                    {errors.status && (
+                        <p className='text-red-500 text-sm'>
+                            {errors.status.message}
+                        </p>
+                    )}
+                </div>
                 <div className='flex gap-3'>
                     {post && (
                         <Button
                             type='button'
                             bgColor='bg-gray-500'
+                            hoverEffect='hover:shadow-[0_0_20px_rgba(156,163,175,0.5)]'
                             onClick={() => navigate(`/post/${post.$id}`)}
                         >
                             Cancel
@@ -167,9 +210,15 @@ export default function PostForm({ post = null }) {
 
                     <Button
                         type='submit'
-                        bgColor={post ? 'bg-green-600' : undefined}
+                        className='w-full justify-center'
+                        bgColor={post ? 'bg-green-600' : 'bg-[#E05C2A]'}
+                        hoverEffect={
+                            post
+                                ? 'hover:shadow-[0_0_20px_rgba(34,197,94,0.5)]'
+                                : 'hover:shadow-[0_0_20px_rgba(219,146,88,0.3)]'
+                        }
                     >
-                        {post ? 'Update' : 'Submit'}
+                        {post ? 'Update Post' : 'Publish Post'}
                     </Button>
                 </div>  
             </div>
