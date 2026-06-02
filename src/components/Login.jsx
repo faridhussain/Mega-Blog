@@ -104,7 +104,7 @@ export default function Login() {
                             )}
                         </div>
                             
-                        {error && <p className='text-red-500'>{error}</p>}
+                        {error && <p className='text-red-500 text-center'>{error}</p>}
 
                         <Button disabled={loading} type='submit' className='w-full outline-none mt-3'>{loading ? 'Signing in...' : 'Sign In'}</Button>
                     </div>  

@@ -92,7 +92,12 @@ export class Service {
     }
 
     // method for getting all active posts
-    async getPosts({ queries = [Query.equal('status', 'active')] } = {}) {
+    async getPosts({
+        queries = [
+            Query.equal('status', 'active'),
+            Query.orderDesc('$createdAt')
+        ]
+    } = {}) {
         try {
             // getting all documents which match query
             return await this.databases.listDocuments(

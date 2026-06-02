@@ -22,7 +22,8 @@ export default function AllPosts() {
 
         appwriteService.getPosts({
             queries: [
-                Query.equal('userId', userData.$id)
+                Query.equal('userId', userData.$id),
+                Query.orderDesc('$createdAt')
             ]
         }).then((posts) => {
             if (posts) {
