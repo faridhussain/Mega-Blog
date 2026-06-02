@@ -9,7 +9,7 @@ import AuthLayout from "./components/AuthLayout.jsx";
 import Login from "./components/Login.jsx";
 import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
-import AllPosts from "./pages/AllPosts.jsx";
+import MyPosts from "./pages/MyPosts.jsx";
 import AddPost from "./pages/AddPost.jsx";
 import EditPost from "./pages/EditPost.jsx";
 import Post from "./pages/Post.jsx";
@@ -39,12 +39,12 @@ const router = createBrowserRouter([
           </AuthLayout>
         ),
       },
-      {
-        path: "/all-posts",
+      { 
+        path: "/my-posts",
         element: (
           <AuthLayout authentication>
             {" "}
-            <AllPosts />
+            <MyPosts />
           </AuthLayout>
         ),
       },

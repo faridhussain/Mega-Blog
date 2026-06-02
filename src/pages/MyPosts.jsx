@@ -1,0 +1,65 @@
+import { Button, Container, PostCard } from '../components/index.js'
+import appwriteService from '../appwrite/config.js'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Query } from 'appwrite'
+import { Link } from 'react-router-dom'
+import { MoveRight } from 'lucide-react'
+
+export default function AllPosts() {
+    const [posts, setPosts] = useState([])
+
+    const userData = useSelector(
+        (state) => state.auth.userData
+    )
+
+    useEffect(() => {
+        if (!userData) return
+
+        appwriteService.getPosts({
+            queries: [
+                Query.equal('userId', userData.$id)
+            ]
+        }).then((posts) => {
+            if (posts) {
+                setPosts(posts.documents)
+            }
+        })
+    }, [userData])
+
+    if (posts.length === 0) {
+        return (
+            <Container>
+                <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+                    <h1 className='text-3xl font-extrabold text-gray-300 mb-3 text-center'>You haven't created any posts yet</h1>
+                    <p className='text-gray-400 text-center text-lg'>Start writing and publish your first post</p>
+                    <div className='flex justify-center mt-5'>
+                        <Link
+                            to='/add-post'
+                            className='group px-6 py-2 bg-[#DB9258] font-semibold inline-flex items-center gap-1 rounded-md hover:shadow-[0_0_25px_rgba(219,146,88,0.4)] duration-300 md:text-lg hover:-translate-y-0.5'
+                        >
+                            Create Your First Post
+                            <MoveRight
+                                className='transition-transform duration-300 group-hover:translate-x-1'
+                                size={16}
+                                strokeWidth={3}
+                            />
+                        </Link>
+                    </div>
+                </div>
+            </Container>
+        )
+    }
+
+    return (
+        <div>
+            <Container>
+                <div className='flex flex-wrap gap-3 p-5'>
+                    {posts.map((post) => (
+                        <PostCard key={post.$id} {...post} showStatus={true} />
+                    ))}
+                </div>
+            </Container>
+        </div>
+    )
+}
