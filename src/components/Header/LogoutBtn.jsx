@@ -14,6 +14,6 @@ export default function LogoutBtn() {
     }
 
     return (
-        <Button onClick={logoutHandler}>Logout</Button>
+        <Button onClick={logoutHandler} className='uppercase'>Logout</Button>
     )
 }

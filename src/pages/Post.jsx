@@ -10,6 +10,7 @@ export default function Post() {
     const [post, setPost] = useState(null)
     const { slug } = useParams()
     const [isDeleting, setIsDeleting] = useState(false)
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
     const userData = useSelector(
@@ -20,13 +21,17 @@ export default function Post() {
 
     useEffect(() => {
         if (slug) {
-            appwriteService.getPost(slug).then((post) => {
-                if (post) {
-                    setPost(post)
-                } else {
-                    navigate('/')
-                }
-            })
+            appwriteService.getPost(slug)
+                .then((post) => {
+                    if (post) {
+                        setPost(post)
+                    } else {
+                        navigate('/')
+                    }
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
         } else {
             navigate('/')
         }
@@ -48,7 +53,21 @@ export default function Post() {
         setIsDeleting(false)
     }
 
-    return post ? (
+    if (loading) {
+        return (
+            <Container>
+                <div className='flex justify-center items-center min-h-[75vh]'>
+                    <h1 className='text-gray-400 text-3xl font-bold'>
+                        Loading post...
+                    </h1>
+                </div>
+            </Container>
+        )
+    }
+
+    if (!post) return null
+
+    return (
         <Container>
             <div className='mx-auto w-[60%] py-5'>
                 <div className='mx-auto max-w-fit'>
@@ -86,5 +105,5 @@ export default function Post() {
                 </div>
             </div>
         </Container>
-    ) : null
+    )
 }

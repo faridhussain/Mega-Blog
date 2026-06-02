@@ -8,13 +8,17 @@ import { MoveRight } from 'lucide-react'
 
 export default function AllPosts() {
     const [posts, setPosts] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const userData = useSelector(
         (state) => state.auth.userData
     )
 
     useEffect(() => {
-        if (!userData) return
+        if (!userData) {
+            setLoading(false)
+            return
+        }
 
         appwriteService.getPosts({
             queries: [
@@ -25,7 +29,22 @@ export default function AllPosts() {
                 setPosts(posts.documents)
             }
         })
+        .finally(() => {
+            setLoading(false)
+        })
     }, [userData])
+
+    if (loading) {
+        return (
+            <Container>
+                <div className='flex justify-center items-center min-h-[75vh]'>
+                    <h1 className='text-gray-400 text-3xl font-bold'>
+                        Loading your posts...
+                    </h1>
+                </div>
+            </Container>
+        )
+    }
 
     if (posts.length === 0) {
         return (

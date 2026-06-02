@@ -8,12 +8,16 @@ import { MoveRight } from 'lucide-react';
 export default function Home() {
     const [posts, setPosts] = useState([])
     const authStatus = useSelector((state) => state.auth.status)
+    const [loading, setLoading] = useState(true)
     
     useEffect(() => {
         appwriteService.getPosts().then((posts) => {
             if (posts) {
                 setPosts(posts.documents)
             }
+        })
+        .finally(() => {
+            setLoading(false)
         })
     }, [])
 
@@ -54,6 +58,15 @@ export default function Home() {
     }
 
     if (posts.length === 0) {
+        if (loading) {
+            return (
+                <Container>
+                    <div className='flex justify-center items-center min-h-[75vh]'>
+                        <h1 className='text-gray-300 text-3xl font-bold'>Loading posts...</h1>
+                    </div>
+                </Container>
+            )
+        }
         return (
             <Container>
                 <div className='flex justify-center items-center min-h-[75vh]'>
