@@ -14,6 +14,7 @@ import AddPost from "./pages/AddPost.jsx";
 import EditPost from "./pages/EditPost.jsx";
 import Post from "./pages/Post.jsx";
 import NotFound from './pages/NotFound.jsx';
+import 'react-toastify/dist/ReactToastify.css'
 
 const router = createBrowserRouter([
   {

@@ -5,6 +5,7 @@ import parse from 'html-react-parser'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { Trash, SquarePen, Loader2 } from 'lucide-react';
+import { successToast } from '../utils/toast.js'
 
 export default function Post() {
     const [post, setPost] = useState(null)
@@ -48,6 +49,7 @@ export default function Post() {
         const status = await appwriteService.deletePost(post.$id)
         if (status) {
             await appwriteService.deleteFile(post.featuredImage)
+            successToast('Post deleted successfully')
             navigate('/')
         }
         setIsDeleting(false)

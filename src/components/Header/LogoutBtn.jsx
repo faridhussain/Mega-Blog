@@ -3,6 +3,7 @@ import authService from '../../appwrite/auth'
 import { logout } from '../../store/authSlice'
 import { Button } from '../index.js'
 import { useState } from 'react'
+import { successToast } from '../../utils/toast.js'
 
 export default function LogoutBtn() {
     const dispatch = useDispatch()
@@ -13,6 +14,8 @@ export default function LogoutBtn() {
 
         await authService.logout()
         dispatch(logout())
+
+        successToast('Logged out successfully')
 
         setLoading(false)
     }

@@ -5,7 +5,7 @@ import appwriteService from '../../appwrite/config.js'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { ImageIcon, ChevronDown, ChevronUp, Check } from 'lucide-react'
-
+import { successToast } from '../../utils/toast.js'
 
 export default function PostForm({ post = null }) {
     const {
@@ -52,6 +52,7 @@ export default function PostForm({ post = null }) {
                 })
 
                 if (dbPost) {
+                    successToast('Post updated successfully')
                     navigate(`/post/${dbPost.$id}`)
                 }
             } else {
@@ -66,6 +67,7 @@ export default function PostForm({ post = null }) {
                     })
 
                     if (dbPost) {
+                        successToast('Post published successfully')
                         navigate(`/post/${dbPost.$id}`)
                     }
                 }

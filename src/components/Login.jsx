@@ -6,6 +6,7 @@ import { login as authLogin } from '../store/authSlice.js'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Input } from './index.js'
 import { MoveRight, Eye, EyeOff } from 'lucide-react';
+import { successToast } from '../utils/toast.js'
 
 export default function Login() {
     const navigate = useNavigate()
@@ -24,6 +25,7 @@ export default function Login() {
                 const userData = await authService.getCurrentUser()
                 if (userData) {
                     dispatch(authLogin({userData}))
+                    successToast('Logged in successfully')
                     navigate('/')
                 }
             }

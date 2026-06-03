@@ -4,6 +4,7 @@ import authService from "./appwrite/auth.js";
 import { login, logout } from "./store/authSlice.js";
 import { Header } from "./components/index.js";
 import { Outlet } from "react-router-dom";
+import { ToastContainer } from 'react-toastify'
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function App() {
       <main className="grow">
         <Outlet />
       </main>
+      <ToastContainer />
     </div>
   ) : null;
 }
