@@ -87,7 +87,7 @@ export default function Home() {
             return (
                 <Container>
                     <div className='flex justify-center items-center min-h-[75vh]'>
-                        <h1 className='text-gray-300 text-3xl font-bold'>Loading posts...</h1>
+                        <h1 className='text-gray-400 text-xl md:text-3xl font-bold text-center px-4'>Loading posts...</h1>
                     </div>
                 </Container>
             )
@@ -95,7 +95,7 @@ export default function Home() {
         return (
             <Container>
                 <div className='flex justify-center items-center min-h-[75vh]'>
-                    <h1 className='text-gray-300 text-3xl font-bold'>No posts yet. Create your first post!</h1>
+                    <h1 className='text-gray-400 text-xl md:text-3xl font-bold text-center px-4'>No posts yet. Create your first post!</h1>
                 </div>
             </Container>
         )

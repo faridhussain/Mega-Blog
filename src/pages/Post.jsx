@@ -59,7 +59,7 @@ export default function Post() {
         return (
             <Container>
                 <div className='flex justify-center items-center min-h-[75vh]'>
-                    <h1 className='text-gray-400 text-3xl font-bold'>
+                    <h1 className='text-gray-400 text-xl md:text-3xl font-bold text-center px-4'>
                         Loading post...
                     </h1>
                 </div>
@@ -71,21 +71,32 @@ export default function Post() {
 
     return (
         <Container>
-            <div className='mx-auto w-[60%] py-5'>
-                <div className='mx-auto max-w-fit'>
+            <div className='mx-auto w-[95%] md:w-[90%] lg:w-[80%] xl:w-[60%] py-5'>
+                <div className='w-full'>
                     <div className='mb-6 flex flex-col items-center'>
-                        <h1 className='text-4xl font-bold mb-4 text-[#E05C2A] capitalize select-text selection:bg-[#E05C2A] selection:text-white'>{post.title}</h1>
-                        <div className='relative inline-block'>
+                        <h1 className='text-2xl md:text-3xl lg:text-4xl font-bold mb-4 text-[#E05C2A] capitalize text-center select-text selection:bg-[#E05C2A] selection:text-white'>
+                            {post.title}
+                        </h1>
+
+                        <div className='relative w-full'>
                             <img
                                 src={appwriteService.getFilePreview(post.featuredImage)}
                                 alt={post.title}
-                                className='max-h-125 w-auto object-contain rounded-md border border-[#383733]'
+                                className='w-full max-h-[70vh] object-contain rounded-md border border-[#383733]'
                             />
+
                             {isAuthor && (
-                                <div className='absolute top-4 right-4 flex gap-3'>
+                                <div className='absolute top-3 right-3 flex gap-2 md:gap-3'>
                                     <Link to={`/edit-post/${post.$id}`}>
-                                        <Button className='p-2!' bgColor='bg-green-600' hoverEffect='hover:shadow-[0_0_15px_rgba(34,197,94,0.6)]'><SquarePen /></Button>
+                                        <Button
+                                            className='p-2!'
+                                            bgColor='bg-green-600'
+                                            hoverEffect='hover:shadow-[0_0_15px_rgba(34,197,94,0.6)]'
+                                        >
+                                            <SquarePen size={20} />
+                                        </Button>
                                     </Link>
+
                                     <Button
                                         className='p-2!'
                                         onClick={deletePost}
@@ -94,16 +105,19 @@ export default function Post() {
                                         hoverEffect='hover:shadow-[0_0_15px_rgba(239,68,68,0.6)]'
                                     >
                                         {isDeleting ? (
-                                            <Loader2 className='animate-spin' />
+                                            <Loader2 className='animate-spin' size={20} />
                                         ) : (
-                                            <Trash />
+                                            <Trash size={20} />
                                         )}
                                     </Button>
                                 </div>
-                            )}  
+                            )}
                         </div>
-                    </div>  
-                    <div className='text-lg leading-9 text-gray-400 select-text selection:bg-white selection:text-black'>{parse(post.content)}</div>
+                    </div>
+
+                    <div className='text-base md:text-lg leading-7 md:leading-9 text-gray-400 select-text selection:bg-white selection:text-black wrap-break-word'>
+                        {parse(post.content)}
+                    </div>
                 </div>
             </div>
         </Container>
