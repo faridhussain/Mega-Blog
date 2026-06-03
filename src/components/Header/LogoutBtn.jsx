@@ -24,7 +24,7 @@ export default function LogoutBtn() {
         <Button
             onClick={logoutHandler}
             disabled={loading}
-            className='uppercase text-base!'
+            className='uppercase'
         >
             {loading ? 'Logging out...' : 'Logout'}
         </Button>
