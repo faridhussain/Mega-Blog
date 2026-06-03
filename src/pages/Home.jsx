@@ -105,7 +105,7 @@ export default function Home() {
     // Display all posts using PostCard component
     return (
         <Container>
-            <div className='flex gap-4 flex-wrap p-4'>
+            <div className='columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 p-4'>
                 {posts.map((post) => (
                     <PostCard key={post.$id} {...post} />
                 ))}

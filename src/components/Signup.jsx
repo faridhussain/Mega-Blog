@@ -30,11 +30,14 @@ export default function Signup() {
                 }
             }
         } catch (error) {
-            if (error?.message?.includes('already exists')) {
-                setError('An account with this email already exists')
-            } else {
-                setError('Something went wrong. Please try again.')
-            }
+            console.log('full error:', error)
+            console.log('message:', error?.message)
+            console.log('code:', error?.code)
+            console.log('type:', error?.type)
+
+            alert(error?.message)
+
+            setError(error?.message || 'unknown error')
         } finally {
             setLoading(false)
         }
@@ -44,7 +47,7 @@ export default function Signup() {
         <div className='min-h-[75vh] flex justify-center items-center flex-col gap-2 md:p-5 p-3'>  
             <div className='w-full max-w-170 mx-auto rounded-md md:p-10 p-4 border border-[#383733] flex flex-col gap-2'>
                 <h2 className='md:text-3xl sm:text-2xl text-xl font-bold text-center text-white'>Sign up to create account</h2>
-                <p className='text-[#595650] md:text-lg sm:text-base text-sm mb-12 text-center'>
+                <p className='text-[#595650] md:text-lg sm:text-base text-sm md:mb-12 mb-7 text-center'>
                     Already have an account?&nbsp;
                     <Link className='group text-[#DB9258] outline-none font-semibold duration-300 italic inline-flex items-center gap-1' to='/login'>Sign In<MoveRight className='transition-transform duration-300 group-hover:translate-x-0.5' size={16} /></Link>
                 </p>
@@ -64,7 +67,7 @@ export default function Signup() {
                                         value: 5,
                                         message: 'Full name must be at least 5 characters'
                                     },
-                                    validate: (value) => /^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,})+$/.test(value) || 'Please enter your first and last name'
+                                    validate: (value) => /^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,})+$/.test(value.trim()) || 'Please enter your first and last name'
                                 }) }
                             />
                             {errors.name && (

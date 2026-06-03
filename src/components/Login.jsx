@@ -44,7 +44,7 @@ export default function Login() {
         <div className='min-h-[75vh] flex justify-center items-center flex-col gap-2 md:p-5 p-3'>
             <div className='w-full max-w-170 mx-auto rounded-md md:p-10 p-4 flex flex-col gap-2 border border-[#383733]'>
                 <h2 className='md:text-3xl sm:text-2xl text-xl font-bold text-center text-white'>Sign in to your account</h2>
-                <p className='text-[#595650] md:text-lg sm:text-base text-sm mb-12 text-center'>
+                <p className='text-[#595650] md:text-lg sm:text-base text-sm md:mb-12 mb-7 text-center'>
                     Don&apos;t have an account?&nbsp;
                     <Link className='group text-[#DB9258] outline-none font-semibold duration-300 italic inline-flex items-center gap-1' to='/signup'>Sign Up<MoveRight className='transition-transform duration-300 group-hover:translate-x-0.5' size={16} /></Link>
                 </p>                        

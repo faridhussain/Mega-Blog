@@ -5,7 +5,10 @@ export default function PostCard({ $id, featuredImage, title, content, status, s
     const preview = content?.replace(/<[^>]*>/g, '') || ''
     
     return (
-        <Link to={`/post/${$id}`} className='inline-block max-w-sm '>
+        <Link
+            to={`/post/${$id}`}
+            className='block w-full mb-4 break-inside-avoid'
+        >
             <div className='relative overflow-hidden rounded-md border border-[#383733] transition-all duration-300 cursor-pointer hover:border-white/20 hover:shadow-[0_0_25px_rgba(255,255,255,0.08)]'>
                 {showStatus && (
                     <div
