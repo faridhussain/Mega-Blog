@@ -105,8 +105,12 @@ export default function PostForm({ post = null }) {
     }, [register])
 
     return (
-        <form autoComplete='off' className='flex gap-5 items-center justify-center py-4 px-6' onSubmit={handleSubmit(submit)}>
-            <div className='flex flex-col gap-2 w-3/4'>
+        <form
+            autoComplete='off'
+            className='flex flex-col lg:flex-row lg:items-center gap-5 py-4 px-3 md:px-6'
+            onSubmit={handleSubmit(submit)}
+        >
+            <div className='flex flex-col gap-2 w-full lg:w-3/4'>
                 <Input
                     label = 'Title: '
                     placeholder = 'Title'
@@ -120,7 +124,7 @@ export default function PostForm({ post = null }) {
                     })}
                 />
                 {errors.title && (
-                    <p className='text-red-500 text-sm mb-2'>
+                    <p className='text-red-500 text-sm'>
                         {errors.title.message}
                     </p>
                 )}
@@ -146,19 +150,19 @@ export default function PostForm({ post = null }) {
                     }}
                 />
                 {errors.content && (
-                    <p className='text-red-500 text-md'>
+                    <p className='text-red-500 text-sm'>
                         {errors.content.message}
                     </p>
                 )}
             </div>
-            <div className='w-1/4 border border-[#383733] flex flex-col gap-5 rounded-md p-6 bg-[#0E0D09]'>
+            <div className='w-full lg:w-1/4 border border-[#383733] flex flex-col gap-5 rounded-md p-4 md:p-6 bg-[#0E0D09]'>
                 <label className='font-medium text-[#595650] uppercase'>Featured Image</label>
                 {!imagePreview && (
                     <label
                         htmlFor='image-upload'
-                        className='h-52 border-2 border-dashed border-[#4a4a4a] rounded-md flex flex-col items-center justify-center cursor-pointer hover:border-[#E05C2A] duration-300'
+                        className='h-40 md:h-52 border-2 border-dashed border-[#4a4a4a] rounded-md flex flex-col items-center justify-center cursor-pointer hover:border-[#E05C2A] duration-300'
                     >
-                        <ImageIcon size={40} className='text-gray-400 mb-3' />
+                        <ImageIcon size={32} className='text-gray-400 mb-3 md:w-10 md:h-10' />
                         <span className='text-gray-300 font-medium'>Click to upload</span>
                         <span className='text-sm text-gray-500'>PNG, JPG, GIF</span>
                     </label>
@@ -188,7 +192,7 @@ export default function PostForm({ post = null }) {
                     <img
                         src={imagePreview}
                         alt='Preview'
-                        className='max-h-72 w-auto object-contain mt-4 rounded-md border border-[#383733]'
+                        className='w-full max-h-72 object-contain rounded-md border border-[#383733]'
                     />
                 )}
                 <div className='border-t border-[#383733]' />
@@ -209,7 +213,7 @@ export default function PostForm({ post = null }) {
                         </p>
                     )}
                 </div>
-                <div className='flex gap-3'>
+                <div className='flex flex-col sm:flex-row gap-3'>
                     {post && (
                         <Button
                             type='button'

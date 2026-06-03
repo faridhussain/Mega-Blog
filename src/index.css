@@ -10,6 +10,14 @@ html {
   scrollbar-width: none;
 }
 
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  background-color: #0A0A08;
+}
+
 /* IE and old Edge */
 body {
   -ms-overflow-style: none;
