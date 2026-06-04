@@ -49,7 +49,7 @@ export default function Header() {
 
     // main header layout
     return (
-        <header className='relative md:py-4 md:px-8 py-2 px-3 top-0 left-0 z-100 bg-[#0A0A08] border-b-2 border-b-[#151513]'>
+        <header className='sticky top-0 md:py-4 md:px-8 py-2 px-3 z-100 bg-[#0A0A08]/95 backdrop-blur-md border-b-2 border-b-[#151513]'>
             <Container>
                 <nav className='flex justify-between items-center'>
                     {/* application logo */}
