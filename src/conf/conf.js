@@ -1,6 +1,5 @@
 // this file stores all Appwrite enviornment variables in one place
 // so we can access them easily anywhere in the project by importing conf
-
 const conf = {
     appwriteUrl: String(import.meta.env.VITE_APPWRITE_URL),
     appwriteProjectId: String(import.meta.env.VITE_APPWRITE_PROJECT_ID),

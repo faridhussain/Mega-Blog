@@ -11,8 +11,8 @@ import { Client, ID, Databases, Query, Storage } from 'appwrite'
 
 export class Service {
     client = new Client()
-    databases
-    bucket
+    databases;
+    bucket;
     constructor() {
         this.client
             .setEndpoint(conf.appwriteUrl)

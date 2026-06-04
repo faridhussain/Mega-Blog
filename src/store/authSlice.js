@@ -1,10 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    
     // false means user is not logged in initially
     status: false,
-    
     // no user data available initially
     userData: null
 }

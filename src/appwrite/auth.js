@@ -10,7 +10,7 @@ import { Client, Account, ID } from 'appwrite'
 // this class is used to handle all authentication related work like signup, login, logout, getting current user
 export class AuthService {
     client = new Client()
-    account
+    account;
 
     // constructor runs automatically when AuthService object is created
     // here we setup Appwrite connection and account service

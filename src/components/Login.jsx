@@ -9,33 +9,49 @@ import { MoveRight, Eye, EyeOff } from 'lucide-react';
 import { successToast } from '../utils/toast.js'
 
 export default function Login() {
+    // used to redirect user after successful login
     const navigate = useNavigate()
+    // used to update authentication state in redux
     const dispatch = useDispatch()
+    // controls password visibility
     const [showPassword, setShowPassword] = useState(false)
+    // prevents multiple login requests
     const [loading, setLoading] = useState(false)
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    // stores authentication error messages
     const [error, setError] = useState('')
 
+    const { register, handleSubmit, formState: { errors } } = useForm()
+
+    // handles user login and updates authentication state
     const login = async (data) => {
+        // clear previous errors and start loading state
         setError('')
         setLoading(true)
         try {
+            // create login session using appwrite authentication
             const session = await authService.login(data)
             if (session) {
+                // fetch current user information after successful login
                 const userData = await authService.getCurrentUser()
                 if (userData) {
+                    // store user data in redux
                     dispatch(authLogin({userData}))
+                    // notify user that login was successful
                     successToast('Logged in successfully')
+                    // redirect user to home page
                     navigate('/')
                 }
             }
-        } catch (error) {
+        } 
+        // show user friendly error messages
+        catch (error) {
             if (error?.message?.includes('Invalid credentials')) {
                 setError('Invalid email or password')
             } else {
                 setError('Something went wrong. Please try again.')
             }
-        } finally {
+        } 
+        finally {
             setLoading(false)
         }
     }
@@ -46,12 +62,11 @@ export default function Login() {
                 <h2 className='md:text-3xl sm:text-2xl text-xl font-bold text-center text-white'>Sign in to your account</h2>
                 <p className='text-[#595650] md:text-lg sm:text-base text-sm md:mb-12 mb-7 text-center'>
                     Don&apos;t have an account?&nbsp;
-                    <Link className='group text-[#DB9258] outline-none font-semibold duration-300 italic inline-flex items-center gap-1' to='/signup'>Sign Up<MoveRight className='transition-transform duration-300 group-hover:translate-x-0.5' size={16} /></Link>
-                </p>                        
+                    <Link className='group text-[#DB9258] outline-none font-semibold duration-300 italic inline-flex items-center gap-1' to='/signup'>Sign Up<MoveRight className='transition-transform duration-300 group-hover:translate-x-0.5' size={16}/></Link>
+                </p>
                 <form autoComplete='off' onSubmit={handleSubmit(login)}>
                     <div className='flex flex-col gap-5'>
-
-                        {/* Input for email */}
+                        {/* email input field */}
                         <div className='flex flex-col gap-2'>
                             <Input
                                 label='Email Address: '
@@ -67,11 +82,12 @@ export default function Login() {
                                 })}
                             />
                             {errors.email && (
-                                <p className='text-red-500 text-sm pl-1'>{errors.email.message}</p>
+                                <p className='text-red-500 text-sm pl-1'>
+                                    {errors.email.message}
+                                </p>
                             )}
                         </div>
-
-                        {/* Input for password */}
+                        {/* password input field */}
                         <div className='flex flex-col gap-2'>
                             <div className='relative'>
                                 <Input
@@ -88,28 +104,34 @@ export default function Login() {
                                         }
                                     })}
                                 />
-
+                                {/* toggle password visibility */}
                                 <button
                                     type='button'
                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                     onClick={() => setShowPassword(prev => !prev)}
                                     className='absolute right-3 top-[70%] -translate-y-1/2 text-[#777]'
                                 >
-                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    {showPassword ? (
+                                        <EyeOff size={18} />
+                                    ) : (
+                                        <Eye size={18} />
+                                    )}
                                 </button>
                             </div>
-
                             {errors.password && (
                                 <p className='text-red-500 text-sm pl-1'>
                                     {errors.password.message}
                                 </p>
                             )}
                         </div>
-                            
-                        {error && <p className='text-red-500 text-center'>{error}</p>}
-
+                        {/* authentication error message */}
+                        {error && (
+                            <p className='text-red-500 text-center'>
+                                {error}
+                            </p>
+                        )}
                         <Button disabled={loading} type='submit' className='w-full outline-none mt-3'>{loading ? 'Signing in...' : 'Sign In'}</Button>
-                    </div>  
+                    </div>
                 </form>
             </div>
         </div>
