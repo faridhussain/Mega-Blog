@@ -5,7 +5,7 @@ import appwriteService from '../../appwrite/config.js'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { ImageIcon, ChevronDown, ChevronUp, Check } from 'lucide-react'
-import { successToast } from '../../utils/toast.js'
+import { successToast, errorToast } from '../../utils/toast.js'
 
 // manages both creating new posts and updating existing posts
 export default function PostForm({ post = null }) {
@@ -78,6 +78,14 @@ export default function PostForm({ post = null }) {
                 }
             }
         } catch (error) {
+            if (error?.message?.includes('already exists')) {
+                errorToast('a post with this slug already exists')
+            } else {
+                errorToast(
+                    error?.message || 'something went wrong, please try again'
+                )
+            }
+
             console.log('Post submit error:', error)
         } finally {
             setIsSubmitting(false)
@@ -188,6 +196,12 @@ export default function PostForm({ post = null }) {
                 )}
                 {imagePreview && (
                     <img src={imagePreview} alt='Preview' className='w-full max-h-72 object-contain rounded-md border border-[#383733]' />
+                )}
+                {imagePreview && (
+                    <label htmlFor='image-upload' className='w-fit relative overflow-hidden group px-6 py-2 bg-[#0E0D09] border rounded-md text-gray-300 font-bold md:text-lg hover:border-[#db935864] border-[#a5724764] hover:shadow-[0_0_25px_rgba(219,146,88,0.4)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer text-center'>
+                        <span className='absolute top-0 -left-full h-full w-1/3 skew-x-12 bg-linear-to-r from-transparent via-[#DB9258]/50 to-transparent transition-all duration-700 group-hover:left-[130%]' />
+                        <span className='relative z-10'>Change Image</span>
+                    </label>
                 )}
                 <div className='border-t border-[#383733]' />
                 <div className='flex flex-col gap-2'>
