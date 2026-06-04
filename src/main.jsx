@@ -14,6 +14,7 @@ import AddPost from "./pages/AddPost.jsx";
 import EditPost from "./pages/EditPost.jsx";
 import Post from "./pages/Post.jsx";
 import NotFound from './pages/NotFound.jsx';
+import About from './pages/About.jsx'
 import 'react-toastify/dist/ReactToastify.css'
 
 const router = createBrowserRouter([
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "/post/:slug",
         element: <Post />,
+      },
+      {
+        path: '/about',
+        element: <About />
       },
       {
         path: '*',
