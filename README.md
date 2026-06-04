@@ -25,6 +25,7 @@ This project was built while learning React and modern frontend development. The
 - Protected routes using authentication
 - Custom 404 page
 - Form validation using React Hook Form
+- Beginner-friendly codebase with detailed notes and comments
 
 ## Tech Stack
 
@@ -46,3 +47,6 @@ This project was built while learning React and modern frontend development. The
 ### Build Tool
 - Vite
 - Bun
+
+## For Developers
+This project contains detailed comments and notes throughout the codebase to make it easier for beginners to understand how the application works.
